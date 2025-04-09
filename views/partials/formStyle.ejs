@@ -1,0 +1,82 @@
+<style>
+    /* Center the form on the page */
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f4f7fc;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+    }
+  
+    /* Style for the form container */
+    #user-form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+  
+    /* Style for the form labels */
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #333;
+    }
+  
+    /* Style for the input fields */
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: all 0.3s ease-in-out;
+    }
+  
+    input:focus {
+      border-color: #4e9af1;
+      outline: none;
+    }
+  
+    /* Style for the submit button */
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #4e9af1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+  
+    button:hover {
+      background-color: #3578e5;
+    }
+  
+    button:active {
+      background-color: #2a64c9;
+    }
+  
+    /* Optional: Add a small space between password inputs */
+    input[type="password"]:nth-child(3),
+    input[type="password"]:nth-child(4) {
+      margin-bottom: 10px;
+    }
+  
+    /* Optional: Add some responsive design */
+    @media (max-width: 500px) {
+      #user-form {
+        width: 90%;
+        padding: 20px;
+      }
+    }
+  </style>
+  
