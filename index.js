@@ -45,7 +45,7 @@ app.use("/profile", restrictUnkownUsers, (req, res) => {
 });
 app.use("/app", appRouter);
 app.use("/api", noChache, apiRouter);
-
+appp.use("/",(req,res)=>{return res.send("hii");});
 // MongoDB connection
 connectDB( process.env.MONGO_URI ||"mongodb://bkmandawat06:TgxiUbzgTiAGZAF9@ac-9ossrny-shard-00-00.prtfju5.mongodb.net:27017,ac-9ossrny-shard-00-01.prtfju5.mongodb.net:27017,ac-9ossrny-shard-00-02.prtfju5.mongodb.net:27017/?replicaSet=atlas-12dx2t-shard-0&ssl=true&authSource=admin&retryWrites=true&w=majority&appName=Cluster0");
 
