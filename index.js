@@ -10,14 +10,33 @@ app.use(cookieParser());
 // CORS Configuration
  // Add more origins if needed
 
-const corsOptions = {
- // Use the array of allowed origins
-  origin:["http://localhost:5173","https://dsa-frontend-zeta.vercel.app"],
-  credentials: true, // Allow credentials such as cookies
-};
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://your-production-url.com',
+  'https://another-frontend.netlify.app'
+];
 
-// Use CORS middleware with options *BEFORE* other middleware
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: function (origin, callback) {
+    // allow requests with no origin like mobile apps or curl
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // allow cookies/authorization headers
+}));
+
+// const corsOptions = {
+//  // Use the array of allowed origins
+//   origin:["http://localhost:5173","https://dsa-frontend-zeta.vercel.app"],
+//   credentials: true, // Allow credentials such as cookies
+// };
+
+// // Use CORS middleware with options *BEFORE* other middleware
+// app.use(cors(corsOptions));
 
 
 // No-cache middleware
