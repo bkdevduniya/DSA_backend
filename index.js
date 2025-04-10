@@ -11,7 +11,6 @@ app.use(cookieParser());
  // Add more origins if needed
 
 const allowedOrigins = [
-  'http://localhost:5173',
   'https://dsa-frontend-zeta.vercel.app'
 ];
 
