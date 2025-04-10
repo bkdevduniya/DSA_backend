@@ -10,14 +10,14 @@ app.use(cookieParser());
 // CORS Configuration
  // Add more origins if needed
 
-const corsOptions = {
- // Use the array of allowed origins
-  origin:"http://localhost:5173",
-  credentials: true, // Allow credentials such as cookies
-};
+// const corsOptions = {
+//  // Use the array of allowed origins
+//   origin:"http://localhost:5173",
+//   credentials: true, // Allow credentials such as cookies
+// };
 
 // Use CORS middleware with options *BEFORE* other middleware
-app.use(cors(corsOptions));
+app.use(cors());
 
 
 // No-cache middleware
@@ -50,4 +50,4 @@ app.use("/",(req,res)=>{return res.send("hii");});
 connectDB( process.env.MONGO_URI ||"mongodb://bkmandawat06:bk6232@ac-9ossrny-shard-00-00.prtfju5.mongodb.net:27017,ac-9ossrny-shard-00-01.prtfju5.mongodb.net:27017,ac-9ossrny-shard-00-02.prtfju5.mongodb.net:27017/?replicaSet=atlas-12dx2t-shard-0&ssl=true&authSource=admin&retryWrites=true&w=majority&appName=Cluster0");
 
 // Start the server
-app.listen(5000, () => console.log("Server is running on port 5000"));
+app.listen(5000, () => console.log("Server is running "));
