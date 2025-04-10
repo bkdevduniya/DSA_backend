@@ -12,7 +12,7 @@ app.use(cookieParser());
 
 const corsOptions = {
  // Use the array of allowed origins
-  origin:"http://localhost:5173",
+  origin:["http://localhost:5173","https://dsa-frontend-zeta.vercel.app"],
   credentials: true, // Allow credentials such as cookies
 };
 
