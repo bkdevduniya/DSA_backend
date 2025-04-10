@@ -12,8 +12,7 @@ app.use(cookieParser());
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://your-production-url.com',
-  'https://another-frontend.netlify.app'
+  'https://dsa-frontend-zeta.vercel.app'
 ];
 
 app.use(cors({
