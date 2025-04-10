@@ -16,7 +16,7 @@ const signup=async(req,res)=>{
        
        const token=generateToken(user);
        await tokens.create({userId:user._id,token:token});
-       res.cookie('userToken',token,{httpOnly:true});
+       res.cookie('userToken',token,{httpOnly:true,secure:true,sameSite:'none'});
        return res.status(201).json({msg:"user created"})
     }catch(err){
         console.log(err);
@@ -35,7 +35,7 @@ const login=async(req,res)=>{
     }
     const token=generateToken(user);
     await tokens.create({userId:user._id,token:token});
-    res.cookie('userToken',token,{httpOnly:true});
+    res.cookie('userToken',token,{httpOnly:true,secure:true,sameSite:'none'});
     return res.status(200).json({msg:"login success"});;
     }
     catch(err){
