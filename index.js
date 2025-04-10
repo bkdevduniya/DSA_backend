@@ -10,14 +10,14 @@ app.use(cookieParser());
 // CORS Configuration
  // Add more origins if needed
 
-// const corsOptions = {
-//  // Use the array of allowed origins
-//   origin:"http://localhost:5173",
-//   credentials: true, // Allow credentials such as cookies
-// };
+const corsOptions = {
+ // Use the array of allowed origins
+  origin:"http://localhost:5173",
+  credentials: true, // Allow credentials such as cookies
+};
 
 // Use CORS middleware with options *BEFORE* other middleware
-app.use(cors());
+app.use(cors(corsOptions));
 
 
 // No-cache middleware
