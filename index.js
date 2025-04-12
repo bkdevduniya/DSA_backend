@@ -10,20 +10,12 @@ app.use(cookieParser());
 // CORS Configuration
  // Add more origins if needed
 
-const allowedOrigins = [
-  'https://dsa-frontend-zeta.vercel.app'
-];
+// const allowedOrigins = [
+//   'https://dsa-frontend-zeta.vercel.app'
+// ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    // allow requests with no origin like mobile apps or curl
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin:   'https://dsa-frontend-zeta.vercel.app',
  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   credentials: true // allow cookies/authorization headers
 }));
