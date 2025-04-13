@@ -21,7 +21,7 @@ const questionStatInitalisation= await questions.aggregate([
         }
     }
 ]);
-console.log("questionStatInitalisation",questionStatInitalisation);
+// console.log("questionStatInitalisation",questionStatInitalisation);
 if(!user.stats.tags){
     user.stats.tags={};
 }
@@ -38,28 +38,24 @@ catch(err){
     console.error(err);
     return;
 }
-    console.log("this.stats.tags",user.stats.tags);
+    // console.log("this.stats.tags",user.stats.tags);
     return ;
 };
 
 
 const getRecommendation = async (user)=>{
     if(!user.stats.initialised){
-    console.log("initializing stats");
+    // console.log("initializing stats");
     await initializeStats(user);
     user.stats.initialised=true;
     await users.updateOne({email:user.email},{$set:{stats:user.stats}});
     }
     const arr = Object.values(user.stats.tags);
-    console.log("arr",arr);
+    // console.log("arr",arr);
     const inputForModel = arr.map((qnStat) =>{return (qnStat[3]!=0?(qnStat[2]/qnStat[3])*100:0);});
-    console.log("input for model",inputForModel);
+    // console.log("input for model",inputForModel);
     let outputForModel = await predict(inputForModel);
-   console.log("model output",outputForModel);
-//    if(outputForModel){
-//        outputForModel=outputForModel.toLowerCase();
-//        console.log("output for model lower",outputForModel);
-//    }
+   // console.log("model output",outputForModel);
     let finalOutput;
     if (user.stats.tags[outputForModel][1].length >= 1) {
       finalOutput = user.stats.tags[outputForModel][1][0].title;
@@ -82,10 +78,10 @@ const recommend=async (req,res)=>{
     const {email}=verifyToken(token);
     const user=await users.findOne({email});
     if(!user) return {status:"usr not found"};
-    console.log("user",user);
+    // console.log("user",user);
     const question=await getRecommendation(user);
     
-    console.log("question",question);
+    // console.log("question",question);
     if(!question) return res.json({status:"no question found"});
     else if(question=="topic complete") return res.json({status:"topic complete"});
     const questionDetails=await questions.findOne({title:question});
