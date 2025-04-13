@@ -36,6 +36,7 @@ if(!user.stats.tags){
 }
 catch(err){
     console.error(err);
+    return;
 }
     console.log("this.stats.tags",user.stats.tags);
     return ;
@@ -47,6 +48,7 @@ const getRecommendation = async (user)=>{
     console.log("initializing stats");
     await initializeStats(user);
     user.stats.initialised=true;
+    await users.updateOne({email:user.email},{$set:{stats:user.stats}});
     }
     const arr = Object.values(user.stats.tags);
     console.log("arr",arr);
@@ -82,7 +84,7 @@ const recommend=async (req,res)=>{
     if(!user) return {status:"usr not found"};
     console.log("user",user);
     const question=await getRecommendation(user);
-    await users.updateOne({email:user.email},{$set:{...user}});
+    
     console.log("question",question);
     if(!question) return res.json({status:"no question found"});
     else if(question=="topic complete") return res.json({status:"topic complete"});
