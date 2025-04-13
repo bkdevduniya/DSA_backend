@@ -38,7 +38,7 @@ const customLoadHandler = {
 const pred=async(input) => {
   // Step 1: Load the model
   const model = await tf.loadLayersModel({ load: customLoadHandler.load });
-  console.log('✅ Model loaded from ./model');
+  console.log(' Model loaded from ./model');
 
   // Step 2: Input features (should match the 34 numerical features used during training)
 
@@ -49,8 +49,8 @@ const pred=async(input) => {
   const predictedIndex = prediction.argMax(1).dataSync()[0]; // Get class with highest prob
   const predictedTag = dsaTags[predictedIndex];
 
-  console.log(`🎯 Predicted class index: ${predictedIndex}`);
-  console.log(`🔖 Predicted DSA tag: ${predictedTag}`);
+  console.log(` Predicted class index: ${predictedIndex}`);
+  console.log(` Predicted DSA tag: ${predictedTag}`);
 
   return predictedTag;
 };
