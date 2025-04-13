@@ -16,7 +16,7 @@ app.use(cookieParser());
 
 app.use(cors({
   origin:   'https://dsa-frontend-zeta.vercel.app',
- methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+ methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS','PATCH'],
   credentials: true // allow cookies/authorization headers
 }));
 
