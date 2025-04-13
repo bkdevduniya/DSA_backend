@@ -63,7 +63,7 @@ questionBankSchema.pre('save', async function(next) {
         
         user.stats.tags[this.tags][3]+=this.difficulty=="easy"?1:this.difficulty=="medium"?2:3;
         user.stats.tags[this.tags][1] = updatedList;
-        console.log("difficulty",this.difficulty);
+        // console.log("difficulty",this.difficulty);
         // await user.save();
         await users.updateOne({email:user.email},{$set:{stats:user.stats}});
       } // <-- safer than updateOne to retain full document structure
