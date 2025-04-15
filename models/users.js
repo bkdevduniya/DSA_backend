@@ -103,88 +103,88 @@ const hash = createHmac('sha256', salt)
 return hash===hashedPassword;
 };
 
-userSchema.methods.solved=async function({tags,title,difficulty,rating}){
-           try{
-            if(!tags||!title||!difficulty||!rating) return ;
-            else{
-            console.log("tag",tags);
-            let check1=this.stats.tags[tags][0].findIndex((q)=>q.title==title);
-            let check2=this.stats.tags[tags][1].findIndex((q)=>q.title==title);
-            if((check1==-1&&check2!=-1)){
-              this.stats.tags[tags][1].splice(check2,1);
-              this.stats.tags[tags][0].push({title,rating});
-              this.stats.tags[tags][2]+=(difficulty=="easy"?1:difficulty=="medium"?2:3);
-            }
-            else{
-              let check3=this.stats.tags[tags][4].findIndex((q)=>q.title==title);
-              if((check1==-1&&check3!=-1)){
-                this.stats.tags[tags][4].splice(check3,1);
-                this.stats.tags[tags][0].push({title,rating});
-                this.stats.tags[tags][2]+=(difficulty=="easy"?1:difficulty=="medium"?2:3);
-              }
-            }
-            }
+userSchema.methods.solved = async function ({ tags, title, difficulty, rating }) {
+    try {
+      if (!tags || !title || !difficulty || !rating) return;
+  
+      const tagStats = this.stats.tags[tags];
+      if (!tagStats) return;
+  
+      const [solved, unsolved,,,skipped] = tagStats;
+  
+      const checkSolved = solved.findIndex(q => q.title === title);
+      const checkUnsolved = unsolved.findIndex(q => q.title === title);
+      const checkSkipped = skipped.findIndex(q => q.title === title);
+  
+      if (checkSolved === -1 && checkUnsolved !== -1) {
+        unsolved.splice(checkUnsolved, 1);
+        solved.push({ title, rating });
+        tagStats[2] += difficulty === "easy" ? 1 : difficulty === "medium" ? 2 : 3;
+      } else if (checkSolved === -1 && checkSkipped !== -1) {
+        skipped.splice(checkSkipped, 1);
+        solved.push({ title, rating });
+        tagStats[2] += difficulty === "easy" ? 1 : difficulty === "medium" ? 2 : 3;
+      }
+      this.markModified('stats');
+    } catch (e) {
+      console.log(e);
+    }
+    return;
+  };
+  
+  userSchema.methods.skip = async function ({ tags, title, rating }) {
+    try {
+      if (!tags || !title || !rating) return;
+  
+      const tagStats = this.stats.tags[tags];
+      if (!tagStats) return;
+  
+      const [, unsolved, , , skipped] = tagStats;
+  
+      const indexUnsolved = unsolved.findIndex(q => q.title === title);
+      const indexSkipped = skipped.findIndex(q => q.title === title);
+  
+      if (indexUnsolved !== -1) unsolved.splice(indexUnsolved, 1);
+      if (indexSkipped === -1) skipped.push({ title, rating });
+  
+      this.markModified('stats');
+    } catch (e) {
+      console.log(e);
+    }
+    return;
+  };
+  
+  userSchema.methods.markUnsolved = async function ({ tags, title, difficulty, rating }) {
+    try {
+      if (!tags || !title || !rating) return;
+  
+      const tagStats = this.stats.tags[tags];
+      if (!tagStats) return;
+  
+      const [solved, unsolved, score] = tagStats;
+  
+      // Add to unsolved if not present
+      if (!unsolved.some(q => q.title === title)) {
+        const insertIndex = unsolved.findIndex(q => q.rating > rating);
+        if (insertIndex === -1) {
+          unsolved.push({ title, rating });
+        } else {
+          unsolved.splice(insertIndex, 0, { title, rating });
         }
-            catch(e){
-                console.log(e);
-            }
-            return ;
-         };
-
-userSchema.methods.skip=async function({tags,title,rating}){
-           try{
-            if(!tags||!title||!rating) return ;
-            else{
-            let check1=this.stats.tags[tags][1].findIndex((q)=>q.title==title);
-            let check2=this.stats.tags[tags][4].findIndex((q)=>q.title==title);
-            if(check1!=-1)
-            this.stats.tags[tags][1].splice(check1,1);
-            if(check2==-1)
-            this.stats.tags[tags][4].push({title,rating});
-            }
-        }
-        catch(e){
-            console.log(e);
-        }
-             return ;
-        };
-userSchema.methods.markUnsolved=async function({tags,title,difficulty,rating}){
-            try{
-             if(!tags||!title||!rating) return ;
-             else{
-                console.log(title);
-                let id1;
-                id1=this.stats.tags[tags][1].findIndex((q)=>{
-                    return q.title==title;
-                });
-                // console.log(id,id2);
-                 if(id1==-1){
-                  let idForInsertion=this.stats.tags[tags][1].findIndex((q)=>{
-                      return q.rating>rating;
-                  });
-                  if(idForInsertion==-1){
-                      this.stats.tags[tags][1].push({title,rating});
-                  }
-                  else{
-                      this.stats.tags[tags][1].splice(idForInsertion,0,{title,rating});
-                  }
-                  }
-                let id2;
-                id2=this.stats.tags[tags][0].findIndex((q)=>{
-                    return q.title==title;
-                });
-                if(id2!=-1){
-                    console.log(id2);
-                    this.stats.tags[tags][0].splice(id2,1);
-                    this.stats.tags[tags][2]-=(difficulty=='easy'?1:difficulty=='medium'?2:3);
-                }
-             }
-         }
-         catch(e){
-             console.log(e);
-         }
-              return ;
-         };
-
+      }
+  
+      // Remove from solved if present
+      const indexSolved = solved.findIndex(q => q.title === title);
+      if (indexSolved !== -1) {
+        solved.splice(indexSolved, 1);
+        tagStats[2] -= difficulty === 'easy' ? 1 : difficulty === 'medium' ? 2 : 3;
+      }
+  
+      this.markModified('stats');
+    } catch (e) {
+      console.log(e);
+    }
+    return;
+  };
 const users = mongoose.model("User", userSchema);
 module.exports =users;
