@@ -50,9 +50,6 @@ const apiRouter = require("./routes/api");
 // app.use("/",(req, res) => res.send("hellow"));
 app.use("/recommend", recommendationRouter);
 app.use("/auth", noChache, authRouter);
-app.use("/profile", restrictUnkownUsers, (req, res) => {
-  return res.render("profile", { userDetails: req.userDetails });
-});
 app.use("/app", appRouter);
 app.use("/api", noChache, apiRouter);
 app.use("/",(req,res)=>{return res.send("hii");});
