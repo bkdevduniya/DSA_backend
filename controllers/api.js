@@ -54,7 +54,7 @@ const logoutUser=async (req,res)=>{
     try{
     const token=req.cookies.userToken;
     if(!token) return res.status(401).json({msg:"user not logged in"});
-    await tokens.findOneAndDelete({token});
+    await tokens.deleteOne({token:token});
     res.clearCookie('userToken');
    return  res.status(200).json({msg:"logout success"});
     }
