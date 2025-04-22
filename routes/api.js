@@ -1,0 +1,18 @@
+const {checkLoggedIn,logoutUser,postQuestion,createSheet,markSolved,unsolved,skip,searchHandler,userStats,userCredentials,handleChangedProfileDetails,handleSheetStatusChange,sheetsProvider,provideSheetQuestions}=require("../controllers/api");
+const express=require("express");
+const router=express.Router();
+router.get("/admin",checkLoggedIn);
+router.post("/logout",logoutUser);
+router.post("/addQuestion",postQuestion);
+router.post("/addSheet",createSheet);
+router.patch("/solved",markSolved);
+router.patch("/skip",skip);
+router.get("/search",searchHandler);
+router.patch("/unsolved",unsolved);
+router.get("/userStats",userStats);
+router.get("/userCredentials",userCredentials);
+router.put("/updateProfile",handleChangedProfileDetails);
+router.patch("/updateSheetStatus",handleSheetStatusChange);
+router.get("/sheets",sheetsProvider);
+router.get("/sheetQuestions",provideSheetQuestions);
+module.exports=router;
