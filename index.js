@@ -68,7 +68,7 @@ app.post('/uploads',upload.single('profilePicture'),async (req, res) =>{
        console.log("upload");
        const token=req.cookies.userToken;
       const user=verifyToken(token);
-      await setProfilePic(`http://localhost:5000/uploads/profile-pictures/${req.filename}`,user,res,token);
+      await setProfilePic(`https://dsa-backend-ikrj.onrender.com/uploads/profile-pictures/${req.filename}`,user,res,token);
       return res.json({status:"success"});
   }
   );
