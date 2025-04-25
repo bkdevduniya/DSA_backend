@@ -302,7 +302,7 @@ const sendEmail = async function(email) {
       from:'bk.mandawat.06@gmail.com',
       to: email, // Recipient's email
       subject: 'Codeprep',
-      text: 'Please click the following link to reset your password: http://localhost:5173/resetpassword',
+      text: 'Please click the following link to reset your password: https://dsa-frontend-zeta.vercel.app/resetpassword',
     };
   
     const info = await transporter.sendMail(mailOptions);
