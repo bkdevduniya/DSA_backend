@@ -1,6 +1,12 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const {upload}=require("./services/uploads");
+const {setProfilePic}=require("./controllers/credentials");
+const {verifyToken}=require("./services/jwt");
+const path=require("path");
+
+
 const port=process.env.PORT||5000;
 const app = express();
 app.use(express.json());
@@ -44,17 +50,35 @@ app.set("views", "./views");
 const recommendationRouter = require("./routes/recommendation");
 const connectDB = require("./connections/mongodb");
 const authRouter = require("./routes/auth");
-const restrictUnkownUsers = require("./middlewares/restrictUnkownUsers");
 const appRouter = require("./routes/app");
 const apiRouter = require("./routes/api");
-// app.use("/",(req, res) => res.send("hellow"));
-app.use("/recommend", recommendationRouter);
+const credentials=require("./routes/credentials");
+
+app.use("/recommend", noChache,recommendationRouter);
 app.use("/auth", noChache, authRouter);
 app.use("/app", appRouter);
 app.use("/api", noChache, apiRouter);
-app.use("/",(req,res)=>{return res.send("hii");});
+app.use("/credentials",credentials);
+
+// app.use('/uploads/profile-pictures', express.static(path.join(__dirname, 'uploads/profile-pictures')));
+
+// app.use('/static', express.static(path.join(__dirname, 'uploads')));
+
+app.post('/uploads',upload.single('profilePicture'),async (req, res) =>{
+       console.log("upload");
+       const token=req.cookies.userToken;
+      const user=verifyToken(token);
+      await setProfilePic(`http://localhost:5000/uploads/profile-pictures/${req.filename}`,user,res,token);
+      return res.json({status:"success"});
+  }
+  );
+
+app.get('/uploads/profile-pictures/:filename', (req, res) => {
+  const filename = req.params.filename;
+  const filePath = path.join(__dirname, 'uploads/profile-pictures', filename);
+  return res.sendFile(filePath);
+});
 // MongoDB connection
 connectDB( process.env.MONGO_URI ||"mongodb://bkmandawat06:bk6232@ac-9ossrny-shard-00-00.prtfju5.mongodb.net:27017,ac-9ossrny-shard-00-01.prtfju5.mongodb.net:27017,ac-9ossrny-shard-00-02.prtfju5.mongodb.net:27017/?replicaSet=atlas-12dx2t-shard-0&ssl=true&authSource=admin&retryWrites=true&w=majority&appName=Cluster0");
-
 // Start the server
 app.listen(port, () => console.log("Server is running "));
